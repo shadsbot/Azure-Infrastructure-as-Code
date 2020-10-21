@@ -25,6 +25,19 @@ resource "azurerm_linux_virtual_machine" "vm1" {
                 sku = "18.04-LTS"
                 version = "latest"
         }
+
+	provisioner "remote-exec" {
+		inline = [
+			"sudo apt-get -y update",
+			"sudo apt-get -y install nginx",
+		]
+
+		connection {
+			host		= self.public_ip_address
+			user		= self.admin_username
+			password	= self.admin_password
+		}
+	}
 }
 
 data "azurerm_public_ip" "ip" {
